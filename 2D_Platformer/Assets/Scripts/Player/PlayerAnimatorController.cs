@@ -7,6 +7,7 @@ public class PlayerAnimatorController : MonoBehaviour
     public static class Params 
     { 
         public const string Speed = nameof(Speed); 
+        public const string Is_Ground = nameof(Is_Ground);
     }
 
     public static class States
@@ -20,6 +21,7 @@ public class PlayerAnimatorController : MonoBehaviour
         public const string Shield_Continued = "Shield_Continued";
         public const string Death = "Death";
         public const string Roll = "Roll";
+        public const string Jump = "Jump";
     }
 
 }

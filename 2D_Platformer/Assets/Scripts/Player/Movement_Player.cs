@@ -30,13 +30,8 @@ public class Movement_Player : MonoBehaviour
 
     private void Update()
     {
-        Move();
-        Roll();
         Jump();
-    }
-
-    private void FixedUpdate()
-    {
+        Move();
         CheckGround();
     }
 
@@ -44,12 +39,11 @@ public class Movement_Player : MonoBehaviour
     {
         _axisX = Input.GetAxis("Horizontal");
 
-        if (_isGround)
+        if (_isGround && _animator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorController.States.Jump) == false)
         {
             if (Input.GetKey(KeyCode.D))
             {
                 _spriteRenderer.flipX = false;
-                Roll();
             }
 
             if (Input.GetKey(KeyCode.A))
@@ -59,13 +53,12 @@ public class Movement_Player : MonoBehaviour
 
             if (_axisX != 0)
             {
-                if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Roll") == false)
-                    _animator.Play("Run");
+                _animator.Play(PlayerAnimatorController.States.Run);
             }
-            else if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Roll") == false)
+            else
             {
                 _axisX = 0;
-                _animator.Play("Idle");
+                _animator.Play(PlayerAnimatorController.States.Idle);
             }
         }
 
@@ -74,29 +67,20 @@ public class Movement_Player : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && _isGround && _animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") == false)
+        if (Input.GetButtonDown("Jump") && _animator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorController.States.Jump) == false)
         {
-            _isGround = false;
+            _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, false);
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
-                _animator.Play("Jump");
+            _isGround = false;
         }
-    }
-
-    private void Roll()
-    {
-        //if (Input.GetButtonDown("Roll") && _isGround && _animator.GetCurrentAnimatorStateInfo(0).IsName("Roll") == false)
-        //{
-        //    _rigidbody2D.velocity = new Vector2(5, _rigidbody2D.velocity.y);
-        //    _animator.Play("Roll");
-        //}
     }
 
     private void CheckGround()
     {
-        //if (Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0)
-        //{
-        //    _isGround = true;
-        //}
-        _isGround = Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask);
+        if (Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0)
+        {
+            _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, true);
+            _isGround = true;
+        }
     }
 }
