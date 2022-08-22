@@ -22,7 +22,6 @@ public class Movement_Player : MonoBehaviour
 
     private void Awake()
     {
-        _animation = GetComponent<PlayerAnimatorController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
@@ -30,27 +29,27 @@ public class Movement_Player : MonoBehaviour
 
     private void Update()
     {
+        _isGround = CheckGround();
         Jump();
         Move();
-        CheckGround();
     }
 
     private void Move()
     {
         _axisX = Input.GetAxis("Horizontal");
 
-        if (_isGround && _animator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorController.States.Jump) == false)
+        if (Input.GetKey(KeyCode.D))
         {
-            if (Input.GetKey(KeyCode.D))
-            {
-                _spriteRenderer.flipX = false;
-            }
+            _spriteRenderer.flipX = false;
+        }
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                _spriteRenderer.flipX = true;
-            }
+        if (Input.GetKey(KeyCode.A))
+        {
+            _spriteRenderer.flipX = true;
+        }
 
+        if (_isGround)
+        {
             if (_axisX != 0)
             {
                 _animator.Play(PlayerAnimatorController.States.Run);
@@ -75,12 +74,16 @@ public class Movement_Player : MonoBehaviour
         }
     }
 
-    private void CheckGround()
+    private bool CheckGround()
     {
+        bool isGround = false;
+
         if (Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0)
         {
             _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, true);
-            _isGround = true;
+            isGround = true;
         }
+
+        return isGround;
     }
 }

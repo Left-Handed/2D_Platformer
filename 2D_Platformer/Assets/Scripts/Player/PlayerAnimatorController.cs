@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorController : MonoBehaviour
+public class PlayerAnimatorController
 {
     public static class Params 
     { 
@@ -23,5 +23,4 @@ public class PlayerAnimatorController : MonoBehaviour
         public const string Roll = "Roll";
         public const string Jump = "Jump";
     }
-
 }

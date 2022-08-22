@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoblinAnimatorController : MonoBehaviour
+public class GoblinAnimatorController
 {
     public static class Params
     {
