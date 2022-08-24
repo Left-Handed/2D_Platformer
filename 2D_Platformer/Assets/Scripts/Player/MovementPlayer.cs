@@ -56,7 +56,7 @@ public class MovementPlayer : MonoBehaviour
         return Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0;
     }
 
-    private void AnimatorPlay()
+    private void PlayAnimator()
     {
         _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, _isGround);
 
