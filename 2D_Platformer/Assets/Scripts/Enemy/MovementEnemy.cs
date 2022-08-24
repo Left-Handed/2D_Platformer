@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
 
-public class Movement_Enemy : MonoBehaviour
+public class MovementEnemy : MonoBehaviour
 {
     [SerializeField] private Transform _point;
     [SerializeField] private float _speed;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Bag_Player : MonoBehaviour
+public class BagPlayer : MonoBehaviour
 {
     private int _countCoins;
 

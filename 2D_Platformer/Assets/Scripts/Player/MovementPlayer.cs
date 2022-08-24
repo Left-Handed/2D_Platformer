@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 
-public class Movement_Player : MonoBehaviour
+public class MovementPlayer : MonoBehaviour
 {
     [SerializeField] private float _speed = 2f;
     [SerializeField] private float _jumpForce = 4f;
@@ -30,13 +30,35 @@ public class Movement_Player : MonoBehaviour
     private void Update()
     {
         _isGround = CheckGround();
-        Jump();
-        Move();
+        HandlJump();
+        HandlMove();
+        AnimatorPlay();
     }
 
-    private void Move()
+    private void HandlMove()
     {
         _axisX = Input.GetAxis("Horizontal");
+
+        _rigidbody2D.velocity = new Vector2(_axisX * _speed, _rigidbody2D.velocity.y);
+    }
+
+    private void HandlJump()
+    {
+        if (Input.GetButtonDown("Jump") && _isGround)
+        {
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+            _isGround = false;
+        }
+    }
+
+    private bool CheckGround()
+    {
+        return Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0;
+    }
+
+    private void AnimatorPlay()
+    {
+        _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, _isGround);
 
         if (Input.GetKey(KeyCode.D))
         {
@@ -61,29 +83,6 @@ public class Movement_Player : MonoBehaviour
             }
         }
 
-        _rigidbody2D.velocity = new Vector2(_axisX * _speed, _rigidbody2D.velocity.y);
     }
-
-    private void Jump()
-    {
-        if (Input.GetButtonDown("Jump") && _animator.GetCurrentAnimatorStateInfo(0).IsName(PlayerAnimatorController.States.Jump) == false)
-        {
-            _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, false);
-            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
-            _isGround = false;
-        }
-    }
-
-    private bool CheckGround()
-    {
-        bool isGround = false;
-
-        if (Physics2D.OverlapCircle(transform.position, _radiusCheckGround, _layerMask) && _rigidbody2D.velocity.y == 0)
-        {
-            _animator.SetBool(PlayerAnimatorController.Params.Is_Ground, true);
-            isGround = true;
-        }
-
-        return isGround;
-    }
+            
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Bag_Coins : MonoBehaviour
+public class BagCoins : MonoBehaviour
 {
     [SerializeField] private TMP_Text _score; 
-    [SerializeField] private Bag_Player _bag;
+    [SerializeField] private BagPlayer _bag;
 
     private void OnEnable()
     {
